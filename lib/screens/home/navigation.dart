@@ -1,8 +1,10 @@
 
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctorsdmbooking/admin/admin.dart';
 import 'package:doctorsdmbooking/features/auth/auth.dart';
+import 'package:doctorsdmbooking/model/token.dart';
 import 'package:doctorsdmbooking/model/user.dart';
 import 'package:doctorsdmbooking/screens/scan/scan.dart';
 import 'package:doctorsdmbooking/widget/global/widget.dart';
@@ -45,7 +47,7 @@ class _HomePageState extends State<HomePage> {
         body: Center(child: CircularProgressIndicator()),
       );
     }
-
+    final today = DateTime.now().toString().split(" ").first;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -129,7 +131,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: InkWell(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_)=>ScanPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (_)=>ScanPage(user:user!)));
               },
               child: Container(
                 width: w-30,
@@ -182,6 +184,76 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 20,),
           t("Current Token"),
+          StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("tokens")
+                .doc(today)
+                .collection("queue")
+                .where("userName", isEqualTo: user!.id)
+                .limit(1)
+                .snapshots(),
+            builder: (context, snap) {
+
+              if (!snap.hasData) {
+                return const CircularProgressIndicator();
+              }
+
+              if (snap.data!.docs.isEmpty) {
+                return const Text("No token today");
+              }
+
+              final token = TokenModel.fromMap(
+                  snap.data!.docs.first.data());
+
+              return Center(
+                child: Container(
+                  width: w-30,height: 140,
+                  decoration: BoxDecoration(
+                    color: GlobalWidget.color,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(Icons.medical_services,color: Colors.white,),
+                                SizedBox(height: 6,),
+                                Text(token.doctor.department,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),
+                                Text(token.doctor.doctorName,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 19),),
+                              ],
+                            ),
+                            Spacer(),
+                            Container(
+                              width: 100,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15)
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("TOKEN",style: TextStyle(color: GlobalWidget.color),),
+                                  Text(token.tokenNumber.toString(),style: TextStyle(
+                                    fontSize: 27,color: GlobalWidget.color,height: 1
+                                  ),)
+                                ],
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

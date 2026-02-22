@@ -1,28 +1,47 @@
 import 'package:doctorsdmbooking/model/doctor.dart';
+import 'package:doctorsdmbooking/model/user.dart';
 
 class TokenModel {
 
+  String id;
   int tokenNumber;
-  String userId;
+  UserModel user;
   String userName;
   DoctorModel doctor;
   int time;
+  String status;
 
   TokenModel({
+    required this.id,
     required this.tokenNumber,
-    required this.userId,
+    required this.user,
     required this.userName,
     required this.doctor,
     required this.time,
+    required this.status,
   });
 
   Map<String, dynamic> toMap() {
     return {
+      "id": id,
       "tokenNumber": tokenNumber,
-      "userId": userId,
+      "user": user.toMap(),   // FIX
       "userName": userName,
-      "time": time,
       "doctor": doctor.toMap(),
+      "time": time,
+      "status": status,
     };
+  }
+
+  factory TokenModel.fromMap(Map<String, dynamic> map) {
+    return TokenModel(
+      id: map["id"],
+      tokenNumber: map["tokenNumber"],
+      user: UserModel.fromMap(map["user"]),
+      userName: map["userName"],
+      doctor: DoctorModel.fromMap(map["doctor"]),
+      time: map["time"],
+      status: map["status"],
+    );
   }
 }

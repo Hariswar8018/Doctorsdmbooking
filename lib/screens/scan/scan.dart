@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctorsdmbooking/features/token/doctor.dart';
 import 'package:doctorsdmbooking/model/doctor.dart';
+import 'package:doctorsdmbooking/model/user.dart';
+import 'package:doctorsdmbooking/screens/scan/generate.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class ScanPage extends StatefulWidget {
-  const ScanPage({super.key});
+  const ScanPage({super.key,required this.user});
+  final UserModel user;
 
   @override
   State<ScanPage> createState() => _ScanPageState();
@@ -21,6 +24,7 @@ class _ScanPageState extends State<ScanPage> {
   bool processing = false;
 
   Future<void> handleDoctor(String doctorId) async {
+
     if (processing) return;
 
     processing = true;
@@ -34,32 +38,16 @@ class _ScanPageState extends State<ScanPage> {
 
     final doctor = DoctorModel.fromMap(doc.data()!);
 
-    showDialog(
-      context: context,
-      builder: (_) =>
-          AlertDialog(
-            title: Text(doctor.doctorName),
-            content: Text("Generate Token?"),
-            actions: [
-
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("Cancel"),
-              ),
-
-              ElevatedButton(
-                onPressed: () async {
-                  Navigator.pop(context);
-
-                  await generateTokenForDoctor(doctor);
-                },
-                child: const Text("Confirm"),
-              )
-            ],
-          ),
-    );
-
     processing = false;
+
+    if (!mounted) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => GenerateTokenPage(doctor: doctor,user:widget.user),
+      ),
+    );
   }
   Future<void> scanGallery() async {
 
