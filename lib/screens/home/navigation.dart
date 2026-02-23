@@ -16,6 +16,8 @@ import 'package:doctorsdmbooking/widget/global/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shimmer/shimmer.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -28,9 +30,24 @@ class _HomePageState extends State<HomePage> {
   final auth = AuthService();
 
   UserModel? user;
+  Future<void> requestPermissions() async {
+
+    if (!await Permission.camera.isGranted) {
+      await Permission.camera.request();
+    }
+
+    if (!await Permission.photos.isGranted) {
+      await Permission.photos.request();
+    }
+
+    if (!await Permission.notification.isGranted) {
+      await Permission.notification.request();
+    }
+  }
 
   @override
   void initState() {
+
     super.initState();
     load();
   }
@@ -98,8 +115,55 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       }
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+      return  Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: Text("Loading....."),
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    width: w,
+                    height: MediaQuery.of(context).size.height/3-30,
+                    margin: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+              Flexible(
+                child: ListView.builder(
+                  itemCount: 6,
+                  itemBuilder: (_, __) => Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only( top: 5),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                        child: Container(
+                          width: w - 20,
+                          height: MediaQuery.of(context).size.height/6-30,
+                          margin: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          )
       );
     }
     String email = FirebaseAuth.instance.currentUser!.email!;
