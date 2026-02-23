@@ -27,7 +27,7 @@ class CreateDoctorPage extends StatelessWidget {
     );
 
     await ref.set(doctor.toMap());
-
+    Navigator.pop(context);
     Navigator.push(
       context,
       MaterialPageRoute(

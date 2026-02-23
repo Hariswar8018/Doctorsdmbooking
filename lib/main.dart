@@ -3,6 +3,7 @@ import 'package:doctorsdmbooking/screens/first/splash.dart';
 import 'package:doctorsdmbooking/widget/global/widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'firebase_options.dart';
 
@@ -11,9 +12,19 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  const android = AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  const settings = InitializationSettings(
+    android: android,
+  );
+
+  await notifications.initialize(settings: settings);
+
   await GoogleAuthService.init();
   runApp(const MyApp());
 }
+final FlutterLocalNotificationsPlugin notifications =
+FlutterLocalNotificationsPlugin();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -25,6 +36,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(
+            color: Colors.white
+          ),
           backgroundColor: GlobalWidget.color,
           titleTextStyle: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 20),
         ),

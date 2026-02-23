@@ -36,9 +36,9 @@ class UserModel {
     return UserModel(
       id: map["id"],
       name: map["name"],
-      age: map["age"],
+      age: int.tryParse(map["age"].toString()) ?? 0,
+      phone: int.tryParse(map["phone"].toString()) ?? 0,
       gender: map["gender"],
-      phone: map["phone"],
       occupation: map["occupation"],
       place: map["place"],
       email: map["email"],

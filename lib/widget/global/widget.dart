@@ -26,6 +26,17 @@ class GlobalWidget{
       color: GlobalWidget.color,
     ),
   );
+  static Widget empty(double w,String str )=>Container(
+    width: w,height: 90,
+    child: Column(
+      children: [
+        Center(
+          child: Image.asset("assets/empty.png",height: 70,),
+        ),
+        Center(child: Text(str,style: TextStyle(fontWeight: FontWeight.w600),))
+      ],
+    ),
+  );
 
   static Color color = Color(0xff014A8E);
 }

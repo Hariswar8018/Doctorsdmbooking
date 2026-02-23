@@ -64,27 +64,34 @@ class GoogleAuthService {
       onError: (e) => print("Auth error: $e"),
     );
 
-    _googleSignIn.attemptLightweightAuthentication();
+    // _googleSignIn.attemptLightweightAuthentication();
   }
 
-  static Future<void> signIn() async {
+  static Future<User?> signIn() async {
+
     try {
 
       if (_googleSignIn.supportsAuthenticate()) {
-        await _googleSignIn.authenticate();
-      }
+        final result = await _googleSignIn.authenticate();
 
-    } on GoogleSignInException catch (e) {
+        final auth = result.authentication;
 
-      if (e.code == GoogleSignInExceptionCode.canceled) {
-        print("User cancelled sign-in");
-      } else {
-        print("Google sign-in error: $e");
+        final credential = GoogleAuthProvider.credential(
+          idToken: auth.idToken,
+          accessToken: auth.idToken,
+        );
+
+        final userCred =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+        return userCred.user;
       }
 
     } catch (e) {
-      print("Unknown error: $e");
+      print(e);
     }
+
+    return null;
   }
 
   static Future<void> signOut() async {

@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctorsdmbooking/features/token/doctor.dart';
 import 'package:doctorsdmbooking/model/doctor.dart';
 import 'package:doctorsdmbooking/model/user.dart';
+import 'package:doctorsdmbooking/screens/scan/find.dart';
 import 'package:doctorsdmbooking/screens/scan/generate.dart';
+import 'package:doctorsdmbooking/widget/global/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 import 'package:image_picker/image_picker.dart';
@@ -72,7 +74,33 @@ class _ScanPageState extends State<ScanPage> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: scanGallery),
+      appBar: AppBar(
+        title: Text("Scan QR to Book Token"),
+      ),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+
+          FloatingActionButton(
+            heroTag: "gallery",
+            onPressed: scanGallery,
+            backgroundColor: GlobalWidget.color,
+            child: const Icon(Icons.photo,color:Colors.white,),
+          ),
+
+          const SizedBox(height: 12),
+
+          FloatingActionButton(
+            heroTag: "gallery",
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>Find(user:widget.user)));
+            },
+            backgroundColor: GlobalWidget.color,
+            child: const Icon(Icons.search,color:Colors.white,),
+          ),
+        ],
+      ),
       body: MobileScanner(
         onDetect: (barcodeCapture) {
           

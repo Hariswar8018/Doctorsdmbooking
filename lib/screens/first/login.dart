@@ -55,7 +55,38 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   google() async {
-    GoogleAuthService.signIn();
+
+    setState(() => loading = true);
+
+    final user = await GoogleAuthService.signIn();
+
+    if (user == null) {
+      setState(() => loading = false);
+      return;
+    }
+
+    final exists = await auth.userProfileExists(user.uid);
+
+    if (!mounted) return;
+
+    if (exists) {
+      print(exists);
+      print(user);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomePage()),
+      );
+
+    } else {
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => RegisterPage(uid: user.uid)),
+      );
+
+    }
+
+    setState(() => loading = false);
   }
 
   @override

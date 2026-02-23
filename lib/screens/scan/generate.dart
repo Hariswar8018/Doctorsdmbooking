@@ -6,6 +6,7 @@ import 'package:doctorsdmbooking/widget/global/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class GenerateTokenPage extends StatefulWidget {
   final UserModel user;
@@ -53,6 +54,26 @@ class _GenerateTokenPageState extends State<GenerateTokenPage> {
   late String? selectedGender;
   late String? selectedOccupation;
 
+  final FlutterLocalNotificationsPlugin notifications =
+  FlutterLocalNotificationsPlugin();
+  Future<void> showNotification(int counter) async {
+
+    const android = AndroidNotificationDetails(
+      'token_channel',
+      'Token Notifications',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    const details = NotificationDetails(android: android);
+
+    await notifications.show(
+      id: 0,
+      title: 'Token no $counter Generated for you',
+        body: 'Your appointment token has been created with no $counter. Please go to the counter 10 minutes before Token Number',
+      notificationDetails: details
+    );
+  }
   Future<void> createToken() async {
     if (!formKey.currentState!.validate()) return;
 
@@ -117,8 +138,7 @@ class _GenerateTokenPageState extends State<GenerateTokenPage> {
       );
 
       tx.set(tokenRef, token.toMap());
-
-      /// optional: update user profile
+      showNotification(counter);
       tx.set(
         db.collection("users").doc(updatedUser.id),
         updatedUser.toMap(),
