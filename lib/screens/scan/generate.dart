@@ -162,6 +162,38 @@ class _GenerateTokenPageState extends State<GenerateTokenPage> {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
+            (widget.doctor.other1.isNotEmpty||widget.doctor.other2.isNotEmpty)?Container(
+              color: Colors.yellow,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 15),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Please Check Doctor Availability Below : ",
+                        style: const TextStyle(
+                            fontSize: 14,fontWeight: FontWeight.w900
+                        ),
+                      ),
+                      widget.doctor.other1.isEmpty?SizedBox():Text(
+                        "Days Avaialble : "+widget.doctor.other1,
+                        style: const TextStyle(
+                            fontSize: 10,fontWeight: FontWeight.w900
+                        ),
+                      ),
+                      widget.doctor.other2.isEmpty?SizedBox():Text(
+                        "Time : "+widget.doctor.other2,
+                        style: const TextStyle(
+                            fontSize: 10,fontWeight: FontWeight.w900
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ):SizedBox(),
             c(dep, "Name", const Icon(Icons.medical_services_sharp),on: false),
             c(doctor, "Name", const Icon(Icons.medical_information_rounded),on: false),
             c(nameC, "Name", const Icon(Icons.person)),

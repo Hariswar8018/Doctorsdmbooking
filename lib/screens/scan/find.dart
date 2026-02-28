@@ -101,26 +101,41 @@ class _FindState extends State<Find> {
                   ),
                   borderRadius: BorderRadius.circular(9)
                 ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 70,
-                      height: 70,
-                      decoration: BoxDecoration(
-                          color: Color(0xffEDF6FD),
-                          borderRadius: BorderRadius.circular(15)
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 8),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                            color: Color(0xffEDF6FD),
+                            borderRadius: BorderRadius.circular(15)
+                        ),
+                        child: Icon(Icons.medical_services),
                       ),
-                      child: Icon(Icons.medical_services),
-                    ),
-                    SizedBox(width: 12,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(doctor.doctorName,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 16),),
-                        Text(doctor.department,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 12),),
-                      ],
-                    ),
-                  ],
+                      SizedBox(width: 12,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(doctor.doctorName,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700,fontSize: 16),),
+                          Text(doctor.department,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500,fontSize: 12),),
+                          doctor.other1.isEmpty?SizedBox():Text(
+                            "Availability : "+doctor.other1,
+                            style: const TextStyle(
+                                fontSize: 10,fontWeight: FontWeight.w600
+                            ),
+                          ),
+                          doctor.other2.isEmpty?SizedBox():Text(
+                            "Time : "+doctor.other2,
+                            style: const TextStyle(
+                                fontSize: 10,fontWeight: FontWeight.w600
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -50,6 +50,10 @@ class AllDoctorsPage extends StatelessWidget {
                       ),
                     );
                   },
+                  onLongPress: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>
+                        CreateDoctorPage(doctor:doctor)));
+                  },
                   child: Container(
                     width: w,
                     padding: const EdgeInsets.all(10),
@@ -59,7 +63,6 @@ class AllDoctorsPage extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-
                         Container(
                           width: 70,
                           height: 70,
@@ -90,6 +93,18 @@ class AllDoctorsPage extends StatelessWidget {
                                 fontSize: 12,
                               ),
                             ),
+                            doctor.other1.isEmpty?SizedBox():Text(
+                              "Availability : "+doctor.other1,
+                              style: const TextStyle(
+                                fontSize: 10,fontWeight: FontWeight.w600
+                              ),
+                            ),
+                            doctor.other2.isEmpty?SizedBox():Text(
+                              "Time : "+doctor.other2,
+                              style: const TextStyle(
+                                  fontSize: 10,fontWeight: FontWeight.w600
+                              ),
+                            ),
                           ],
                         ),
                         Spacer(),
@@ -101,8 +116,8 @@ class AllDoctorsPage extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0), // Rectangle (no rounded edges)
                                 ),
-                                title: const Text("Log out ?"),
-                                content: const Text("You sure to Log out from the App"),
+                                title: const Text("Delete ?"),
+                                content: const Text("You sure to Delete this Doctor"),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context, false), // Cancel

@@ -96,7 +96,7 @@ class _ProifileState extends State<Proifile> {
                       child: list(Icon(Icons.qr_code_scanner, color:Colors.black,size: 25,), "Scan QR", "about")),
                   InkWell(
                       onTap: () async {
-                        final Uri _url = Uri.parse('https://wa.me/919730033112');
+                        final Uri _url = Uri.parse('https://wa.me/919387268578');
                         if (!await launchUrl(_url)) {
                         throw Exception('Could not launch $_url');
                         }                      },

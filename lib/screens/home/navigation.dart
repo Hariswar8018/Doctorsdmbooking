@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
     String email = FirebaseAuth.instance.currentUser!.email!;
-    return (email=="jissmohan.s@gmail.com")||(email=="samasihariswar@gmail.com")?Admin():WillPopScope(
+    return (email=="jissmohan.s@gmail.com")||(email=="hariswarsaasi@gmail.com")?Admin():WillPopScope(
       onWillPop: () async {
         final shouldExit = await showDialog<bool>(
           context: context,
