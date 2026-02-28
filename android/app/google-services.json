@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "72836734593-3qm23ahdh6pkva6vg77bk1kblf0svtd5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.starwish.doctorsdmbooking",
+            "certificate_hash": "78a4e1e68646471407c1ce6667b7a40a4695be2a"
+          }
+        },
+        {
+          "client_id": "72836734593-apolpvgjsmgpuaod7qroo3i7jm9suv5q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.starwish.doctorsdmbooking",
+            "certificate_hash": "bf1f37b87d780024dd6e121260566585814f8e44"
+          }
+        },
+        {
           "client_id": "72836734593-hlrsbbg68vb01lbqvtcb761bta5722il.apps.googleusercontent.com",
           "client_type": 3
         }

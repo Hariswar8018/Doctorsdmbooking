@@ -39,12 +39,45 @@ class AllUsersPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListTile(
-                        leading: const CircleAvatar(
-                          child: Icon(Icons.person),
+                        leading: CircleAvatar(
+                          child: genderIcon(user.gender),
                         ),
                         title: Text(user.name),
                         subtitle: Text(user.phone.toString()),
-                        trailing: genderIcon(user.gender),
+                        trailing:IconButton(onPressed: () async {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0), // Rectangle (no rounded edges)
+                                ),
+                                title: const Text("Delete ?"),
+                                content: const Text("You sure to Delete this User permanently "),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, false), // Cancel
+                                    child: const Text("Cancel"),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      Navigator.pop(context);
+                                      await FirebaseFirestore.instance
+                                          .collection("users").doc(user.id).delete();
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty.resolveWith(
+                                            (states) => Colors.red,   // your color here
+                                      ),
+                                    ),
+                                    child: const Text("OK",style: TextStyle(color: Colors.white)),
+                                  )
+                                ],
+                              );
+                            },
+                          );
+
+                        }, icon: Icon(Icons.delete,color: Colors.red,)),
                       ),
                       Row(
                         children: [

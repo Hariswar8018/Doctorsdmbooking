@@ -101,8 +101,8 @@ class AllDoctorsPage extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0), // Rectangle (no rounded edges)
                                 ),
-                                title: const Text("Log out ?"),
-                                content: const Text("You sure to Log out from the App"),
+                                title: const Text("Delete ?"),
+                                content: const Text("You sure to Delete this Doctor"),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context, false), // Cancel

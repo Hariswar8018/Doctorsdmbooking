@@ -9,19 +9,28 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  const android = AndroidInitializationSettings('@mipmap/ic_launcher');
 
-  const settings = InitializationSettings(
-    android: android,
-  );
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await GoogleAuthService.init();
+    await notifications
+        .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
+    const android = AndroidInitializationSettings('ic_notification');
+    const settings = InitializationSettings(android: android);
 
-  await notifications.initialize(settings: settings);
+    await notifications.initialize(settings: settings);
 
-  await GoogleAuthService.init();
-  runApp(const MyApp());
+
+    runApp(const MyApp());
+  } catch (e, s) {
+    debugPrint("Startup error: $e");
+    debugPrint("$s");
+    runApp(const MyApp());
+  }
 }
 final FlutterLocalNotificationsPlugin notifications =
 FlutterLocalNotificationsPlugin();
@@ -35,6 +44,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(
             color: Colors.white
@@ -42,7 +52,6 @@ class MyApp extends StatelessWidget {
           backgroundColor: GlobalWidget.color,
           titleTextStyle: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 20),
         ),
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
       home: SplashScreen(),
     );
